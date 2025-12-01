@@ -1,0 +1,814 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ameen Zayani | Portail de Développeur Web</title>
+    
+    <!-- Google Fonts: Poppins for headings, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- ============= CSS ============= -->
+    <style>
+        /* --- CSS Variables for Theming (Light & Dark Mode) --- */
+        :root {
+            --primary-color: #0f766e; /* Teal */
+            --primary-hover: #0d5f56;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --bg-color: #ffffff;
+            --card-bg-color: #f8fafc;
+            --border-color: #e2e8f0;
+            --heading-font: 'Poppins', sans-serif;
+            --body-font: 'Inter', sans-serif;
+        }
+
+        body.dark-theme {
+            --primary-color: #14b8a6;
+            --primary-hover: #5eead4;
+            --text-color: #f1f5f9;
+            --text-light: #94a3b8;
+            --bg-color: #0f172a;
+            --card-bg-color: #1e293b;
+            --border-color: #334155;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container { max-width: 1024px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 100px 0; }
+        .section-title {
+            font-family: var(--heading-font);
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .accent { color: var(--primary-color); }
+        .text-light { color: var(--text-light); }
+
+        /* --- Scroll Reveal Animation --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* --- Header & Navigation --- */
+        .header { background: var(--bg-color); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; width: 100%; }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; }
+        .nav-logo { font-family: var(--heading-font); font-size: 1.5rem; font-weight: 700; color: var(--text-color); text-decoration: none; }
+        .nav-list { display: flex; list-style: none; gap: 2rem; }
+        .nav-link { color: var(--text-color); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+        .nav-link:hover { color: var(--primary-color); }
+        .nav-actions { display: flex; align-items: center; gap: 1.5rem; }
+        .theme-toggle { background: none; border: none; color: var(--text-color); font-size: 1.2rem; cursor: pointer; transition: transform 0.2s ease; }
+        .theme-toggle:hover { transform: rotate(15deg); }
+        .nav-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color); background: none; border: none; }
+
+        /* --- Hero Section --- */
+        .hero { text-align: center; padding: 120px 0; }
+        .hero-title { font-family: var(--heading-font); font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+        .hero-subtitle { font-size: 1.25rem; color: var(--text-light); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .hero-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+        /* --- Buttons --- */
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .btn-primary { background-color: var(--primary-color); color: #fff; }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .btn-secondary { background-color: transparent; color: var(--primary-color); border-color: var(--primary-color); }
+        .btn-secondary:hover { background-color: var(--primary-color); color: #fff; }
+
+        /* --- About Me Section (RESTORED) --- */
+        .about-content { display: flex; align-items: center; gap: 3rem; }
+        .about-image {
+            position: relative;
+            display: inline-block;
+            perspective: 1000px;
+        }
+        .about-image video {
+            width: 280px;
+            height: 280px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, var(--primary-color), #14b8a6, #0f766e) border-box;
+            box-shadow:
+                0 20px 60px rgba(15, 118, 110, 0.3),
+                0 10px 20px rgba(15, 118, 110, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
+        }
+        .about-image video:hover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+            box-shadow:
+                0 30px 80px rgba(15, 118, 110, 0.4),
+                0 15px 30px rgba(15, 118, 110, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(135deg,
+                var(--primary-color) 0%,
+                #14b8a6 25%,
+                #0f766e 50%,
+                #14b8a6 75%,
+                var(--primary-color) 100%);
+            border-radius: 20px;
+            z-index: 1;
+            opacity: 0.8;
+            animation: gradientShift 3s ease-in-out infinite;
+            filter: blur(2px);
+        }
+        .about-image::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        @keyframes gradientShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.02); }
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .about-image:hover .video-controls {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+        .video-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--primary-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .video-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.15) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 118, 110, 0.4);
+            border-color: var(--primary-color);
+        }
+        .video-btn:active {
+            transform: scale(1.05);
+        }
+        .about-text-content { flex: 1; }
+        .about-text { font-size: 1.05rem; margin-bottom: 1.5rem; }
+        .about-highlights {
+            background-color: var(--card-bg-color);
+            border-left: 3px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+        }
+        .about-highlights ul { list-style: none; }
+        .about-highlights li { padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem; }
+        .about-highlights li::before { content: '✓'; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }
+        .about-links { display: flex; gap: 1.5rem; margin-top: 2rem; }
+        .about-link { font-weight: 600; color: var(--primary-color); text-decoration: none; }
+        .about-link:hover { text-decoration: underline; }
+
+        /* --- Skills Section --- */
+        .skills { background-color: var(--card-bg-color); }
+        .skills-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .skills-list {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0 0 0;
+        }
+        .skills-list li {
+            display: inline-block;
+            margin: 0.3rem;
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.2s ease;
+        }
+        .skills-list li:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* --- Philosophy Section --- */
+        .philosophy { background-color: var(--card-bg-color); }
+        .philosophy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+        .philosophy-content p { margin-bottom: 1.5rem; }
+
+        /* --- Experience Section --- */
+        .timeline { position: relative; padding: 2rem 0; }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--border-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        .timeline-item { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; }
+        .timeline-item::after {
+            content: ''; position: absolute; width: 16px; height: 16px;
+            right: -8px; background-color: var(--primary-color);
+            border: 3px solid var(--bg-color); top: 20px; border-radius: 50%; z-index: 1;
+        }
+        .timeline-item.left { left: 0; }
+        .timeline-item.right { left: 50%; }
+        .timeline-item.right::after { left: -8px; }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: var(--card-bg-color);
+            position: relative;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .timeline-content h3 { font-family: var(--heading-font); margin-top: 0; color: var(--primary-color); }
+        .timeline-content .date { font-weight: 600; color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        
+        /* --- Projects Section --- */
+        .project-filters { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 16px; border: 1px solid var(--border-color); background: transparent; color: var(--text-color); border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
+        .filter-btn.active, .filter-btn:hover { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+        .project-card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
+        .project-card.hide { display: none; }
+        .project-title { font-family: var(--heading-font); font-size: 1.4rem; margin-bottom: 0.75rem; }
+        .project-description { margin-bottom: 1.5rem; }
+        .project-section { margin-bottom: 1.5rem; }
+        .project-section h4 { font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-color); }
+        .project-section ul { list-style: none; padding-left: 0; }
+        .project-section li { font-size: 0.9rem; margin-bottom: 0.5rem; padding-left: 1.2rem; position: relative; }
+        .project-section li::before { content: '▸'; position: absolute; left: 0; color: var(--primary-color); }
+        .project-tech { font-size: 0.9rem; color: var(--text-light); margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+        .project-links { display: flex; gap: 1.5rem; margin-top: 1rem; }
+        .project-link { color: var(--primary-color); font-weight: 600; text-decoration: none; }
+        .project-link:hover { text-decoration: underline; }
+        
+        /* --- Blog Section --- */
+        .blog { background-color: var(--card-bg-color); }
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .blog-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+        .blog-card:hover { transform: translateY(-3px); }
+        .blog-card h3 { font-family: var(--heading-font); font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .blog-card p { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1rem; }
+        .blog-link { font-weight: 600; color: var(--primary-color); text-decoration: none; }
+        .blog-link:hover { text-decoration: underline; }
+        
+        /* --- Contact Section --- */
+        .contact { text-align: center; }
+        .contact-form { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; text-align: left; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            font-family: var(--body-font);
+            font-size: 1rem;
+            resize: vertical;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+        
+        /* --- Scroll to Top Button --- */
+        #scroll-to-top {
+            position: fixed; bottom: 20px; right: 20px;
+            background-color: var(--primary-color); color: white; border: none;
+            border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem;
+            cursor: pointer; display: none; align-items: center; justify-content: center;
+            transition: opacity 0.3s, transform 0.3s; z-index: 1000;
+        }
+        #scroll-to-top:hover { transform: translateY(-3px); }
+
+        /* --- Footer --- */
+        .footer { text-align: center; padding: 3rem 0; font-size: 0.9rem; color: var(--text-light); border-top: 1px solid var(--border-color); }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-light); text-decoration: none; font-size: 2rem; transition: color 0.2s ease, transform 0.2s ease; }
+        .footer-links a:hover { color: var(--primary-color); transform: scale(1.2); }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .nav-list { position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); background: var(--bg-color); flex-direction: column; justify-content: start; align-items: center; padding-top: 50px; transition: left 0.3s ease; }
+            .nav-list.active { left: 0; }
+            .nav-toggle { display: block; }
+            .hero-title { font-size: 2.5rem; }
+            .about-content { flex-direction: column; text-align: center; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item.right { left: 0; }
+            .timeline-item::after { left: 21px; }
+            .timeline-item.right::after { left: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============= HTML ============= -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="nav-logo">Ameen Zayani</a>
+            <ul class="nav-list">
+                <li><a href="#about" class="nav-link">À Propos</a></li>
+                <li><a href="#skills" class="nav-link">Compétences</a></li>
+                <li><a href="#philosophy" class="nav-link">Philosophie</a></li>
+                <li><a href="#experience" class="nav-link">Expérience</a></li>
+                <li><a href="#projects" class="nav-link">Projets</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+                <div class="nav-toggle" id="nav-toggle"><i class="fas fa-bars"></i></div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- HERO SECTION -->
+        <section class="hero section">
+            <div class="container fade-in">
+                <h1 class="hero-title">Bonjour, je suis <span class="accent">Ameen Zayani</span>.</h1>
+                <p class="hero-subtitle">Développeur Web | Étudiant en Informatique (3ème année) à ISITCOM | Basé à Jilma, Tunisie. Spécialisé dans la création d'applications web sécurisées et conviviales avec expertise en cybersécurité et frameworks modernes.</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">Voir Mes Projets</a>
+                    <a href="Copie_traduite_de_my_resume.pdf" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Télécharger CV</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT ME SECTION (RESTORED) -->
+        <section class="about section" id="about">
+            <div class="container fade-in">
+                <h2 class="section-title">À Propos de Moi</h2>
+                <div class="about-content">
+                    <aside class="about-image">
+                        <video id="aboutVideo" src="Ameen.MOV" autoplay muted loop playsinline alt="Ameen Zayani introduction video"></video>
+                        <div class="video-controls">
+                            <button class="video-btn" id="playPauseBtn" title="Play/Pause">
+                                <i class="fas fa-pause"></i>
+                            </button>
+                            <button class="video-btn" id="muteBtn" title="Mute/Unmute">
+                                <i class="fas fa-volume-mute"></i>
+                            </button>
+                        </div>
+                    </aside>
+                    <div class="about-text-content">
+                         <p class="about-text">
+                              Étudiant en informatique de 3ème année à ISITCOM avec un intérêt marqué pour la cybersécurité et un focus sur la création d'applications web sécurisées et conviviales. Rigoureux, rapide à apprendre et capable de transformer des idées en solutions fonctionnelles.
+                         </p>
+                         <p class="about-text">
+                              À l'aise travaillant seul ou en équipe et toujours dans l'objectif de livrer des résultats solides à temps. J'ai une expérience pratique acquise lors de stages où j'ai développé une expertise en développement web moderne et conception d'applications sécurisées.
+                         </p>
+                         <div class="about-highlights">
+                             <ul>
+                                 <li>Langages : Python, JavaScript, TypeScript, Java</li>
+                                 <li>Frameworks : Angular, NestJS, Node.js, SpringBoot, ReactJS</li>
+                                 <li>Bases de données : PostgreSQL, MySQL, Convex</li>
+                                 <li>Outils : Git, Github, VS Code</li>
+                                 <li>Spécialisation en cybersécurité et développement web sécurisé</li>
+                             </ul>
+                         </div>
+                         <div class="about-links">
+                             <a href="https://github.com/Ameenz7" target="_blank" rel="noopener noreferrer" class="about-link">GitHub</a>
+                             <a href="mailto:zayaniamine39@gmail.com" target="_blank" rel="noopener noreferrer" class="about-link">Email</a>
+                             <a href="tel:+21654052725" class="about-link">Téléphone</a>
+                         </div>
+                      </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section class="skills section" id="skills">
+            <div class="container fade-in">
+                <h2 class="section-title">Compétences Techniques</h2>
+                <div class="skills-container">
+                    <ul class="skills-list">
+                        <!-- Languages -->
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>TypeScript</li>
+                        <li>Java</li>
+                        <!-- Frameworks/Libraries -->
+                        <li>Angular</li>
+                        <li>NestJS</li>
+                        <li>Node.js</li>
+                        <li>SpringBoot</li>
+                        <li>ReactJS</li>
+                        <!-- Databases -->
+                        <li>PostgreSQL</li>
+                        <li>MySQL</li>
+                        <li>Convex</li>
+                        <!-- Dev Tools -->
+                        <li>Git</li>
+                        <li>Github</li>
+                        <li>VS Code</li>
+                        <!-- Additional -->
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>REST APIs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHILOSOPHY SECTION -->
+        <section class="philosophy section" id="philosophy">
+            <div class="container fade-in">
+                <h2 class="section-title">Ma Philosophie</h2>
+                <div class="philosophy-content">
+                    <p>« Un grand logiciel naît de l'équilibre élégant entre la fonctionnalité et la simplicité. Mon objectif est de créer des applications qui ne sont pas seulement puissantes, mais aussi intuitives et faciles à maintenir. »</p>
+                    <p>« Je crois à l'apprentissage continu et à l'expérience pratique avec les technologies modernes. Chaque projet est une opportunité d'explorer de nouveaux frameworks, de résoudre des problèmes du monde réel et de livrer des solutions significatives. »</p>
+                    <p>« Un code propre et un design centré sur l'utilisateur ne sont pas seulement des exigences techniques – ils sont le fondement des logiciels que les gens aiment utiliser et que les développeurs aiment maintenir. »</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section class="experience section" id="experience">
+            <div class="container fade-in">
+                <h2 class="section-title">Expérience</h2>
+                <div class="timeline">
+                    <div class="timeline-item left">
+                        <div class="timeline-content">
+                            <h3>Stagiaire - Développeur Gestion des Stocks</h3>
+                            <p class="date">@ Skyline (Entreprise de Livraison Médicale) | 2025</p>
+                            <p>Développement d'un système de gestion des stocks pour les fournitures médicales. Amélioration des flux de travail adaptés aux besoins des pharmacies pour un meilleur contrôle des stocks et une meilleure efficacité.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item right">
+                        <div class="timeline-content">
+                            <h3>Stagiaire Développement Web</h3>
+                            <p class="date">@ Tic GEEK | 2024</p>
+                            <p>Création et amélioration d'applications web utilisant des frameworks JavaScript modernes, contribuant à des interfaces utilisateur réactives et interactives.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section class="projects section" id="projects">
+            <div class="container fade-in">
+                <h2 class="section-title">Projets Vedettes</h2>
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all">Tous</button>
+                    <button class="filter-btn" data-filter="frontend">Frontend</button>
+                    <button class="filter-btn" data-filter="backend">Backend</button>
+                    <button class="filter-btn" data-filter="fullstack">Complet</button>
+                </div>
+                <div class="projects-grid">
+                    <div class="project-card" data-category="fullstack">
+                        <h3 class="project-title">Système de Gestion de Pharmacie</h3>
+                        <p class="project-description">Système React 19/TypeScript/Convex moderne pour la gestion rationalisée des pharmacies incluant l'inventaire, le suivi des clients, les ventes et les capacités de rapport CSV/PDF.</p>
+                        <div class="project-section">
+                            <h4>Fonctionnalités Clés & Impact</h4>
+                            <ul>
+                                <li>Gestion complète de l'inventaire avec mises à jour en temps réel</li>
+                                <li>Suivi des clients et analyse des ventes</li>
+                                <li>Génération de rapports CSV et PDF</li>
+                                <li>React 19 moderne avec TypeScript pour la sécurité des types</li>
+                                <li>Backend Convex pour la synchronisation des données en temps réel</li>
+                            </ul>
+                        </div>
+                        <p class="project-tech"><strong>Tech :</strong> React 19, TypeScript, Convex, HTML5, CSS3</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Ameenz7/pharmacy" target="_blank" rel="noopener noreferrer" class="project-link">Code</a>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="fullstack">
+                        <h3 class="project-title">RazenNotes</h3>
+                        <p class="project-description">Application de notes et de tâches en temps réel, riche en fonctionnalités, permettant la gestion collaborative du contenu avec une architecture React et TypeScript moderne.</p>
+                        <div class="project-section">
+                            <h4>Fonctionnalités Avancées</h4>
+                            <ul>
+                                <li>Collaboration et synchronisation en temps réel</li>
+                                <li>Édition et formatage de texte enrichi</li>
+                                <li>Gestion de liste de tâches avec priorités</li>
+                                <li>Design réactif pour tous les appareils</li>
+                                <li>Backend Convex pour une gestion des données transparente</li>
+                            </ul>
+                        </div>
+                        <p class="project-tech"><strong>Tech :</strong> React, TypeScript, Convex, REST APIs</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Ameenz7/RazenNotes" target="_blank" rel="noopener noreferrer" class="project-link">Code</a>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="fullstack">
+                        <h3 class="project-title">SecureScan – Scanneur de Vulnérabilités Sécurité</h3>
+                        <p class="project-description">Application web complète React, Express.js, PostgreSQL pour le scanning de vulnérabilités de bout en bout, l'analyse de ports et la génération instantanée de rapports de sécurité.</p>
+                        <div class="project-section">
+                            <h4>Fonctionnalités de Sécurité</h4>
+                            <ul>
+                                <li>Scanning complet des vulnérabilités</li>
+                                <li>Analyse de ports et évaluation de la sécurité réseau</li>
+                                <li>Génération instantanée de rapports de sécurité</li>
+                                <li>Base de données PostgreSQL pour le stockage des données de sécurité</li>
+                                <li>Backend Express.js pour les opérations de sécurité</li>
+                            </ul>
+                        </div>
+                        <p class="project-tech"><strong>Tech :</strong> React, Express.js, PostgreSQL, Node.js</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Ameenz7/ScanGuard" target="_blank" rel="noopener noreferrer" class="project-link">Code</a>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="frontend">
+                        <h3 class="project-title">Téléchargeur de Fichiers Minimaliste</h3>
+                        <p class="project-description">Application React minimaliste et professionnelle pour les téléchargements directs de fichiers avec une expérience utilisateur immédiate, aucun stockage ou suivi de l'historique, featuring design Tailwind CSS.</p>
+                        <div class="project-section">
+                            <h4>Design & UX</h4>
+                            <ul>
+                                <li>Interface utilisateur claire et minimaliste</li>
+                                <li>Fonctionnalité de téléchargement direct de fichiers</li>
+                                <li>Aucun stockage ou historique pour la confidentialité</li>
+                                <li>Expérience utilisateur immédiate</li>
+                                <li>Tailwind CSS pour un style moderne</li>
+                            </ul>
+                        </div>
+                        <p class="project-tech"><strong>Tech :</strong> React, Tailwind CSS, file-saver</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Ameenz7/FileFetch" target="_blank" rel="noopener noreferrer" class="project-link">Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- BLOG SECTION -->
+        <section class="blog section" id="blog">
+            <div class="container fade-in">
+                <h2 class="section-title">Blog & Articles</h2>
+                <div class="blog-grid">
+                    <article class="blog-card">
+                         <h3>Développement React Moderne avec TypeScript</h3>
+                         <p>Exploration des meilleures pratiques pour construire des applications React évolutives utilisant TypeScript, y compris la sécurité des types, l'architecture des composants et les hooks modernes.</p>
+                         <a href="https://react.dev/learn/typescript" target="_blank" rel="noopener noreferrer" class="blog-link">Guide React TypeScript &rarr;</a>
+                     </article>
+                     <article class="blog-card">
+                         <h3>Développement Full-Stack avec Convex</h3>
+                         <p>Un guide complet pour construire des applications en temps réel utilisant Convex comme solution backend, couvrant la gestion des bases de données et la synchronisation en temps réel.</p>
+                         <a href="https://docs.convex.dev/" target="_blank" rel="noopener noreferrer" class="blog-link">Documentation Convex &rarr;</a>
+                     </article>
+                     <article class="blog-card">
+                         <h3>Outils de Scanning de Vulnérabilités de Sécurité</h3>
+                         <p>Construire des outils de scanning de sécurité efficaces utilisant les technologies web modernes et les meilleures pratiques pour identifier et résoudre les vulnérabilités de sécurité.</p>
+                         <a href="https://owasp.org/www-community/attacks/" target="_blank" rel="noopener noreferrer" class="blog-link">Sécurité OWASP &rarr;</a>
+                     </article>
+                     <article class="blog-card">
+                         <h3>Principes de Design Minimaliste dans le Développement Web</h3>
+                         <p>L'art de créer des interfaces propres et conviviales avec les principes de design minimaliste et les frameworks CSS modernes comme Tailwind CSS.</p>
+                         <a href="https://tailwindcss.com/docs" target="_blank" rel="noopener noreferrer" class="blog-link">Docs Tailwind CSS &rarr;</a>
+                     </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section class="contact section" id="contact">
+            <div class="container fade-in">
+                <h2 class="section-title">Me Contacter</h2>
+                <p class="text-light" style="max-width: 600px; margin: 0 auto 2rem;">Vous avez une question ou souhaitez travailler ensemble ? N'hésitez pas à me contacter en utilisant le formulaire ci-dessous.</p>
+                <!-- IMPORTANT: To make this form work, replace the action URL with your Formspree endpoint. -->
+                <form action="https://formspree.io/f/zayaniamine39@gmail.com" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nom</label>
+                        <input type="text" id="name" name="name" placeholder="Votre nom complet" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="votre.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Objet</label>
+                        <input type="text" id="subject" name="subject" placeholder="De quoi s'agit-il ?">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Parlez-moi de votre projet ou opportunité..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer le Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/Ameenz7" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-square-github"></i></a>
+                <a href="mailto:zayaniamine39@gmail.com" target="_blank" rel="noopener noreferrer" title="Email"><i class="fas fa-envelope-open-text"></i></a>
+                <a href="tel:+21654052725" title="Phone"><i class="fas fa-phone"></i></a>
+                <a href="cover_lettre.pdf" target="_blank" rel="noopener noreferrer" title="Cover Letter"><i class="fas fa-file-contract"></i></a>
+            </div>
+            <p>&copy; 2025 Ameen Zayani. Construit avec HTML, CSS, JavaScript, et beaucoup de ☕</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- ============= JavaScript ============= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. MOBILE NAVIGATION ---
+            const navToggle = document.getElementById('nav-toggle');
+            const navList = document.querySelector('.nav-list');
+            if(navToggle) {
+                navToggle.addEventListener('click', () => { navList.classList.toggle('active'); });
+            }
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => { navList.classList.remove('active'); });
+            });
+
+            // --- 2. PROJECT FILTERING ---
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const filter = button.getAttribute('data-filter');
+                    projectCards.forEach(card => {
+                        card.classList.toggle('hide', !(filter === 'all' || card.getAttribute('data-category') === filter));
+                    });
+                });
+            });
+
+            // --- 3. DARK MODE TOGGLE ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const icon = themeToggle.querySelector('i');
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark-theme') {
+                document.body.classList.add('dark-theme');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                icon.classList.replace(isDark ? 'fa-moon' : 'fa-sun', isDark ? 'fa-sun' : 'fa-moon');
+                localStorage.setItem('theme', isDark ? 'dark-theme' : 'light-theme');
+            });
+
+            // --- 4. SCROLL TO TOP BUTTON ---
+            const scrollToTopBtn = document.getElementById('scroll-to-top');
+            window.addEventListener('scroll', () => {
+                scrollToTopBtn.style.display = window.pageYOffset > 300 ? "flex" : "none";
+            });
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- 5. SCROLL REVEAL ANIMATION ---
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
+                });
+            }, observerOptions);
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+            // --- 6. VIDEO CONTROLS ---
+             const video = document.getElementById('aboutVideo');
+             const playPauseBtn = document.getElementById('playPauseBtn');
+             const muteBtn = document.getElementById('muteBtn');
+             const playPauseIcon = playPauseBtn.querySelector('i');
+             const muteIcon = muteBtn.querySelector('i');
+
+            if (video && playPauseBtn && muteBtn) {
+                // Play/Pause functionality
+                playPauseBtn.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        playPauseIcon.classList.replace('fa-play', 'fa-pause');
+                    } else {
+                        video.pause();
+                        playPauseIcon.classList.replace('fa-pause', 'fa-play');
+                    }
+                });
+
+                // Mute/Unmute functionality
+                muteBtn.addEventListener('click', () => {
+                    video.muted = !video.muted;
+                    if (video.muted) {
+                        muteIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+                    } else {
+                        muteIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+                    }
+                });
+
+                // Update icons based on video state
+                video.addEventListener('play', () => {
+                    playPauseIcon.classList.replace('fa-play', 'fa-pause');
+                });
+
+                video.addEventListener('pause', () => {
+                    playPauseIcon.classList.replace('fa-pause', 'fa-play');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
